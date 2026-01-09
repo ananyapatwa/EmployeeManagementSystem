@@ -30,8 +30,9 @@ public class EmployeeManagementSystem{
             System.out.println("Choose 4 for Sort by salary");
             System.out.println("Choose 5 for Salary Analytics");
             System.out.println("Choose 6 for Find employee by id");
-            System.out.println("Choose 7 for Exit");
-            System.out.println("Enter your choice(1-7):");
+            System.out.println("Choose 7 for Employee with salary > 25000(Grouped by department)");
+            System.out.println("Choose 8 for Exit");
+            System.out.println("Enter your choice(1-8):");
             choice = sc.nextInt();
             switch (choice){
                 case 1:
@@ -53,12 +54,14 @@ public class EmployeeManagementSystem{
                     findbyId();
                     break;
                 case 7:
-                    System.out.println("Exit");
+                    highsal();
                     break;
+                case 8:
+                    System.out.println("Exit");
                 default:
                     System.out.println("Invalid");
             }
-        } while (choice!=7);
+        } while (choice!=8);
     }
     static void addEmployee(){
         System.out.println("Enter ID:");
@@ -102,5 +105,16 @@ public class EmployeeManagementSystem{
         }
         else
             System.out.println("Employee not found");
+
+    }
+    static void highsal(){
+        Map<String,List<Employee>> result = employeeMap.values().stream().filter(e->e.salary>25000).collect(Collectors.groupingBy(e->e.department));//using groupingBy because one key->many employees
+        if(result.isEmpty()){
+            System.out.println("No employees found with a salary higher than 25000");
+        }
+        result.forEach((dept,emplist)->{
+            System.out.println("Department:"+dept);
+            emplist.forEach(System.out::println);
+        });
     }
 }
